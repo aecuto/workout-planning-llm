@@ -2,6 +2,7 @@
 
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import { Form, Field } from "react-final-form";
 
 export default function SignIn() {
@@ -15,6 +16,15 @@ export default function SignIn() {
       }
     });
   };
+
+  useEffect(() => {
+    if (localStorage.getItem("user")) {
+      push("/planning");
+      return;
+    }
+  }, []);
+
+  if (localStorage.getItem("user")) return null;
 
   return (
     <div>

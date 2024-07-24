@@ -23,5 +23,20 @@ export async function POST(request: Request) {
 
   const content = out.choices[0].message.content;
 
+  // const response = await hf.textGeneration({
+  //   model: "OpenAssistant/oasst-sft-4-pythia-12b-epoch-3.5",
+  //   inputs: `<|prompter|>${res.content}<|endoftext|><|assistant|>`,
+  //   parameters: {
+  //     max_new_tokens: 200,
+  //     // @ts-ignore (this is a valid parameter specifically in OpenAssistant models)
+  //     typical_p: 0.2,
+  //     repetition_penalty: 1,
+  //     truncate: 1000,
+  //     return_full_text: false,
+  //   },
+  // });
+
+  // const content = response.generated_text;
+
   return NextResponse.json({ content });
 }

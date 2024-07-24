@@ -14,14 +14,6 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // const { push } = useRouter();
-
-  // if (localStorage.getItem("user")) {
-  //   push("/planning");
-  // } else {
-  //   push("/");
-  // }
-
   return (
     <html lang="en">
       <body className={inter.className}>

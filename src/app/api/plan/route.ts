@@ -1,34 +1,33 @@
-import { PlanModel } from "../../../database/model";
+import { PlanModel, UserModel } from "../../../database/model";
 import { connectDB } from "../../../database/mongodb";
 import { NextResponse, NextRequest } from "next/server";
 
 export async function GET(request: NextRequest) {
-  const res = await request.json();
-
-  console.log(request);
-
   await connectDB();
 
-  const data = PlanModel.find({});
+  const userId = request.headers.get("authorization");
+  const user = await UserModel.findById(userId);
+  if (!user) {
+    return NextResponse.json({ msg: "unauth" }, { status: 401 });
+  }
+
+  const data = await PlanModel.find({});
 
   return NextResponse.json(data);
 }
 
-// export async function POST(request: NextRequest) {
-//   const res = await request.json();
+export async function POST(request: NextRequest) {
+  const res = await request.json();
 
-//   await connectDB();
-//   const found = await UserModel.findOne({
-//     email: res.email,
-//   });
+  await connectDB();
 
-//   if (found)
-//     return NextResponse.json({ message: "email exists!" }, { status: 400 });
+  const userId = request.headers.get("authorization");
+  const user = await UserModel.findById(userId);
+  if (!user) {
+    return NextResponse.json({ msg: "unauth" }, { status: 401 });
+  }
 
-//   const data = await UserModel.create({
-//     email: res.email,
-//     password: res.password,
-//   });
+  const data = await PlanModel.create({ ...res, user: userId });
 
-//   return NextResponse.json(data);
-// }
+  return NextResponse.json(data);
+}
