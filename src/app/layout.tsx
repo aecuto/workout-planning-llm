@@ -14,11 +14,21 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // const { push } = useRouter();
+
+  // if (localStorage.getItem("user")) {
+  //   push("/planning");
+  // } else {
+  //   push("/");
+  // }
+
   return (
     <html lang="en">
       <body className={inter.className}>
         <div className="flex h-screen">
-          <div className="m-auto">{children}</div>
+          <div className="m-auto">
+            <div className="">{children}</div>
+          </div>
         </div>
       </body>
     </html>

@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@huggingface/inference": "^2.8.0",
+    "ai": "^3.2.34",
     "axios": "^1.7.2",
     "final-form": "^4.20.10",
     "mongoose": "^8.5.1",

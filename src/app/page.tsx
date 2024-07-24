@@ -1,5 +1,6 @@
 "use client";
 
+import axios from "axios";
 import { useRouter } from "next/navigation";
 import { Form, Field } from "react-final-form";
 
@@ -7,12 +8,10 @@ export default function SignIn() {
   const { push } = useRouter();
 
   const onSubmit = async (values: any) => {
-    fetch("/api/auth/sign-in", {
-      body: JSON.stringify(values),
-      method: "POST",
-    }).then((res) => {
+    axios.post("/api/auth/sign-in", values).then((res) => {
       if (res.status === 200) {
         push("/planning");
+        localStorage.setItem("user", res.data._id);
       }
     });
   };

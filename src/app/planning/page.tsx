@@ -3,8 +3,11 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Field, Form } from "react-final-form";
 import { Wizard, useWizard } from "react-use-wizard";
+import { useCompletion } from "ai/react";
+import { useRouter } from "next/navigation";
 
 export default function Planning() {
+  const { push } = useRouter();
   const onSubmit = (values: any) => {
     console.log(values);
   };
@@ -18,7 +21,7 @@ export default function Planning() {
         initialValues={{}}
         render={({ handleSubmit, form, submitting, pristine, values }) => (
           <form onSubmit={handleSubmit}>
-            <div className="grid grid-cols-1 gap-4">
+            <div className="grid grid-cols-1 gap-4 content-center">
               <Wizard>
                 <Step1 setGoals={setGoals} values={values} goals={goals} />
                 <Step2 goals={goals} />
@@ -28,6 +31,14 @@ export default function Planning() {
           </form>
         )}
       />
+
+      <div className="border-t-4 border-gray-500 mt-2" />
+      <button
+        className="bg-red-500 w-full rounded p-2  mt-2"
+        onClick={() => push("/dashboard")}
+      >
+        Go to Dashboard
+      </button>
     </div>
   );
 }
@@ -61,9 +72,12 @@ const Step1 = ({ setGoals, values, goals }: any) => {
 
   return (
     <>
-      <p>
-        Personal Information ({activeStep + 1}/{stepCount})
-      </p>
+      <div>
+        <p>
+          Personal Information ({activeStep + 1}/{stepCount})
+        </p>
+      </div>
+
       <div>
         <Field
           name="plan_name"
@@ -109,8 +123,9 @@ const Step1 = ({ setGoals, values, goals }: any) => {
           className="text-black p-2"
         />
       </div>
-      <button onClick={() => nextStep()}>Next ⏭</button>
-      <button onClick={() => previousStep()}>Previous ⏮️</button>
+      <button onClick={() => nextStep()} type="button">
+        Next ⏭
+      </button>
     </>
   );
 };
@@ -144,8 +159,12 @@ const Step2 = ({ goals }: { goals: string[] }) => {
           </Field>
         ))}
       </div>
-      <button onClick={() => nextStep()}>Next ⏭</button>
-      <button onClick={() => previousStep()}>Previous ⏮️</button>
+      <button onClick={() => nextStep()} type="button">
+        Next ⏭
+      </button>
+      <button onClick={() => previousStep()} type="button">
+        Previous ⏮️
+      </button>
     </>
   );
 };
@@ -153,42 +172,47 @@ const Step2 = ({ goals }: { goals: string[] }) => {
 const Step3 = ({ values, form }: any) => {
   const { previousStep, activeStep, stepCount } = useWizard();
 
-  const getWeeklyPlanning = async () => {
+  const { completion, isLoading, complete } = useCompletion({
+    api: "/api/llm/planning",
+  });
+
+  const getWeeklyPlanning = () => {
     if (!values.goal) return;
-    form.change("planning", "generate from ai...");
 
-    const content = `Generate weekly planning for ${values.goal} workout`;
+    const content = `Generate weekly planning for ${values.goal} workout from monday to sunday`;
 
-    return axios.post("/api/llm/planning", { content }).then((res) => {
-      const content = res.data.content;
-      form.change("planning", content);
-    });
+    complete(content);
   };
 
   useEffect(() => {
     getWeeklyPlanning();
   }, []);
 
+  useEffect(() => {
+    if (!isLoading) {
+      form.change("planning", completion);
+    }
+  }, [isLoading]);
+
   return (
     <>
       <p>
         Weekly Planning ({activeStep + 1}/{stepCount})
       </p>
-      <div>
-        <Field
-          name="planning"
-          component="textarea"
-          type="text"
-          placeholder="planning"
-          className="text-black p-2"
-          rows="10"
-          cols="100"
-        />
-      </div>
-      <button type="submit">Submit</button>
-      <button onClick={() => previousStep()}>Previous ⏮️</button>
-      <button onClick={() => getWeeklyPlanning()}>
-        Generate weekly planning
+      <pre className="text-balance max-w-screen-md">{completion}</pre>
+
+      <button type="submit" className="bg-sky-500 rounded p-2">
+        Submit
+      </button>
+      <button
+        onClick={() => getWeeklyPlanning()}
+        type="button"
+        className="bg-blue-500 rounded p-2"
+      >
+        Generate
+      </button>
+      <button onClick={() => previousStep()} type="button">
+        Previous ⏮️
       </button>
     </>
   );

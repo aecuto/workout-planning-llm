@@ -8,8 +8,6 @@ export async function POST(request: Request) {
 
   // `Plan Name: good health, Date of birth: 1995-05-15, Height: 175cm, Weight: 75kg. Generate workout goals, please answer me in format [goal1, goal2] only title, without no., without summary`
 
-  console.log(res.content);
-
   const out = await hf.chatCompletion({
     model: "mistralai/Mistral-7B-Instruct-v0.2",
     messages: [
