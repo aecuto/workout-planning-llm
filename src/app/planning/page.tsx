@@ -107,8 +107,12 @@ const Step1 = () => {
           className="text-black p-2"
         />
       </div>
-      <button onClick={() => nextStep()} type="button">
-        Next ⏭
+      <button
+        onClick={() => nextStep()}
+        type="button"
+        className="bg-orange-500 hover:bg-orange-300"
+      >
+        Next
       </button>
     </>
   );
@@ -163,7 +167,7 @@ const Step2 = ({ values }: any) => {
             {({ input, meta }) => (
               <div
                 className={`${
-                  input.value === goal ? "bg-sky-500" : "bg-sky-700"
+                  input.value === goal ? "bg-blue-500" : "bg-blue-700"
                 } p-2 rounded mb-2 cursor-pointer`}
                 onClick={() => {
                   input.onChange(goal);
@@ -175,11 +179,19 @@ const Step2 = ({ values }: any) => {
           </Field>
         ))}
       </div>
-      <button onClick={() => nextStep()} type="button">
-        Next ⏭
+      <button
+        onClick={() => nextStep()}
+        type="button"
+        className="bg-orange-500 hover:bg-orange-300"
+      >
+        Next
       </button>
-      <button onClick={() => previousStep()} type="button">
-        Previous ⏮️
+      <button
+        onClick={() => previousStep()}
+        type="button"
+        className="bg-teal-500 hover:bg-teal-300"
+      >
+        Previous
       </button>
     </>
   );
@@ -215,20 +227,26 @@ const Step3 = ({ values, form }: any) => {
       <p>
         Weekly Planning ({activeStep + 1}/{stepCount})
       </p>
-      <pre className="text-balance max-w-screen-md">{completion}</pre>
+      <pre className="text-balance max-w-screen-md border border-2 p-3">
+        {completion || "Loading..."}
+      </pre>
 
-      <button type="submit" className="bg-sky-500 rounded p-2">
+      <button type="submit" className="bg-blue-500 rounded p-2">
         Submit
       </button>
       <button
         onClick={() => getWeeklyPlanning()}
         type="button"
-        className="bg-blue-500 rounded p-2"
+        className="bg-purple-500 rounded p-2"
       >
         Generate
       </button>
-      <button onClick={() => previousStep()} type="button">
-        Previous ⏮️
+      <button
+        onClick={() => previousStep()}
+        type="button"
+        className="bg-teal-500 hover:bg-teal-300"
+      >
+        Previous
       </button>
     </>
   );
