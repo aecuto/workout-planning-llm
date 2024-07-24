@@ -33,7 +33,7 @@ export default function Register() {
                   component="input"
                   type="text"
                   placeholder="email"
-                  class="text-black p-2"
+                  className="text-black p-2"
                 />
               </div>
 
@@ -43,7 +43,7 @@ export default function Register() {
                   component="input"
                   type="password"
                   placeholder="password"
-                  class="text-black  p-2"
+                  className="text-black  p-2"
                 />
               </div>
               {submitError && <div className="text-red-500">{submitError}</div>}

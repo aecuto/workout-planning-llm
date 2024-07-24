@@ -1,48 +1,21 @@
 import { HfInference } from "@huggingface/inference";
+import { NextResponse } from "next/server";
 
 const hf = new HfInference(process.env.LLM_TOKEN);
 
 export async function POST(request: Request) {
   const res = await request.json();
 
-  // for await (const output of hf.textGenerationStream({
-  //   model: "gpt2",
-  //   inputs: `i want workout goals`,
-  // })) {
-  //   console.log(output);
-  // }
+  // `Plan Name: good health, Date of birth: 1995-05-15, Height: 175cm, Weight: 75kg. Generate workout goals, please answer me in format [goal1, goal2] only title, without no., without summary`
 
-  // content:
-  // "Plan Name good health, Date of birth 1995-05-15,Height 175cm, Weight 75kg. suggestion workout goals in json one line",
+  console.log(res.content);
 
-  // let out = "";
-  // for await (const chunk of hf.chatCompletionStream({
-  //   model: "mistralai/Mistral-7B-Instruct-v0.2",
-  //   messages: [
-  //     {
-  //       role: "user",
-  //       content:
-  //         "Plan Name: good health, Date of birth: 1995-05-15,Height: 175cm, Weight: 75kg. the workout goals Please respond in text with comma",
-  //     },
-  //   ],
-  //   max_tokens: 500,
-  //   temperature: 0.1,
-  //   seed: 0,
-  // })) {
-  //   if (chunk.choices && chunk.choices.length > 0) {
-  //     out += chunk.choices[0].delta.content;
-  //   }
-  // }
-
-  // console.log(out);
-
-  return hf.chatCompletion({
+  const out = await hf.chatCompletion({
     model: "mistralai/Mistral-7B-Instruct-v0.2",
     messages: [
       {
         role: "user",
-        content:
-          "Plan Name: good health, Date of birth: 1995-05-15,Height: 175cm, Weight: 75kg. the workout goals Please respond in text with comma",
+        content: res.content,
       },
     ],
     max_tokens: 500,
@@ -50,5 +23,7 @@ export async function POST(request: Request) {
     seed: 0,
   });
 
-  // return new StreamingTextResponse(stream);
+  const content = out.choices[0].message.content;
+
+  return NextResponse.json({ content });
 }
