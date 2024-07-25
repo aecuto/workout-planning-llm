@@ -11,15 +11,18 @@
   "dependencies": {
     "@huggingface/inference": "^2.8.0",
     "@material-tailwind/react": "^2.1.9",
-    "ai": "^3.2.34",
+    "ai": "^3.2.35",
     "axios": "^1.7.2",
     "final-form": "^4.20.10",
     "mongoose": "^8.5.1",
     "next": "14.2.5",
+    "ollama": "^0.5.6",
+    "ollama-ai-provider": "^0.10.0",
     "react": "^18.3",
     "react-dom": "^18",
     "react-final-form": "^6.5.9",
-    "react-use-wizard": "^2.3.0"
+    "react-use-wizard": "^2.3.0",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@types/node": "^20",

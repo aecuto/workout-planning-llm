@@ -124,28 +124,24 @@ const Step2 = ({ values }: any) => {
 
   const getGoals = async () => {
     setGoals([]);
-    const plan = `Plan Name: ${values.plan_name || "_"}.`;
+    const plan = `Plan Name: ${values.plan_name || "_"}. `;
     const dob = `Date of birth: ${values.dob || "_"}. `;
     const height = `Height: ${values.height || "_"}cm. `;
-    const weight = `Weight: ${values.weight || "_"}kg.`;
-    const activity = `Weekly activities: ${values.weekly_activities}.`;
-
-    const answer =
-      "Generate workout goals, please answer me in format [goal1, goal2] only title, without no., without summary";
+    const weight = `Weight: ${values.weight || "_"}kg. `;
+    const activity = `Weekly activities: ${values.weekly_activities}. `;
 
     let content = plan + dob + height + weight;
 
     if (values.weekly_activities) {
-      content = content + activity + answer;
+      content = content + activity;
     } else {
-      content = content + answer;
+      content = content;
     }
 
     if (content.includes("_")) return;
 
     return axios.post("/api/llm/goals", { content }).then((res) => {
-      const content = res.data.content.trim();
-      setGoals(content.replace(/\[|\]/g, "").split(","));
+      setGoals(JSON.parse(res.data.content));
     });
   };
 
