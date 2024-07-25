@@ -51,7 +51,7 @@ export default function Register() {
                 <button
                   type="submit"
                   disabled={submitting || pristine}
-                  className="bg-sky-500 hover:bg-sky-700 rounded-full p-2 cursor-pointer"
+                  className="bg-blue-500 hover:bg-blue-700 rounded-full p-2 cursor-pointer"
                 >
                   Submit
                 </button>

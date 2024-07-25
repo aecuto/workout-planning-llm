@@ -5,6 +5,8 @@ import { Field, Form } from "react-final-form";
 import { Wizard, useWizard } from "react-use-wizard";
 import { useCompletion } from "ai/react";
 import { useRouter } from "next/navigation";
+import { getCookie } from "cookies-next";
+import SignOut from "@/app/(after-auth)/Sign-out";
 
 export default function Planning() {
   const { push } = useRouter();
@@ -16,7 +18,7 @@ export default function Planning() {
           name: values.plan_name,
           content: values.planning,
         },
-        { headers: { Authorization: `${localStorage.getItem("user")}` } }
+        { headers: { Authorization: `${getCookie("user")}` } }
       )
       .then(() => {
         push("/dashboard");
@@ -47,6 +49,7 @@ export default function Planning() {
       >
         Go to Dashboard
       </button>
+      <SignOut />
     </div>
   );
 }

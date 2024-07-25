@@ -3,6 +3,7 @@
 
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { getCookie } from "cookies-next";
 
 import {
   Accordion,
@@ -10,6 +11,7 @@ import {
   AccordionBody,
 } from "@material-tailwind/react";
 import { useRouter } from "next/navigation";
+import SignOut from "@/app/(after-auth)/Sign-out";
 
 export default function Dashboard() {
   const { push } = useRouter();
@@ -22,13 +24,14 @@ export default function Dashboard() {
   useEffect(() => {
     axios
       .get("/api/plan", {
-        headers: { Authorization: `${localStorage.getItem("user")}` },
+        headers: { Authorization: `${getCookie("user")}` },
       })
       .then((res) => setPlan(res.data));
   }, []);
 
   return (
     <div className="max-w-screen-md">
+      <SignOut />
       <button
         onClick={() => push("/planning")}
         className="bg-red-500 w-full rounded p-2  mb-[50px]"

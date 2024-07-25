@@ -11,7 +11,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ msg: "unauth" }, { status: 401 });
   }
 
-  const data = await PlanModel.find({});
+  const data = await PlanModel.find({ user: userId });
 
   return NextResponse.json(data);
 }

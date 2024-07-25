@@ -2,8 +2,8 @@
 
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
 import { Form, Field } from "react-final-form";
+import { setCookie } from "cookies-next";
 
 export default function SignIn() {
   const { push } = useRouter();
@@ -12,19 +12,10 @@ export default function SignIn() {
     axios.post("/api/auth/sign-in", values).then((res) => {
       if (res.status === 200) {
         push("/planning");
-        localStorage.setItem("user", res.data._id);
+        setCookie("user", res.data._id);
       }
     });
   };
-
-  useEffect(() => {
-    if (localStorage.getItem("user")) {
-      push("/planning");
-      return;
-    }
-  }, []);
-
-  if (localStorage.getItem("user")) return null;
 
   return (
     <div>
@@ -59,7 +50,7 @@ export default function SignIn() {
                 <button
                   type="submit"
                   disabled={submitting || pristine}
-                  className="bg-sky-500 hover:bg-sky-700 rounded-full p-2 cursor-pointer"
+                  className="bg-blue-500 hover:bg-blue-700 rounded-full p-2 cursor-pointer"
                 >
                   Submit
                 </button>
@@ -67,6 +58,7 @@ export default function SignIn() {
                 <button
                   className="bg-green-500 hover:bg-green-700 rounded-full p-2 cursor-pointer"
                   onClick={() => push("/register")}
+                  type="button"
                 >
                   Register
                 </button>
